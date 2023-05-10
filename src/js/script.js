@@ -9,8 +9,8 @@
         cover: '.book__image',
       },
       class: {
-        favoriteBook: '.favorite',
-        hidden: '.hidden',
+        favoriteBook: 'favorite',
+        hidden: 'hidden',
       },
       form: '.filters form',
     };
@@ -30,6 +30,7 @@
         /* create element using utils.createElementFromHTML */
         const element = utils.createDOMFromHTML(generatedHTML);
         /* add element to menu */
+        //const ratingBgc = determineRatingBgc(book.rating);
         bookContainer.appendChild(element);
         allBooks.push(element);
       }
@@ -37,12 +38,14 @@
     function initActions() {
       //const bookCovers = document.querySelectorAll(select.wrapper.cover);
       //console.log(bookCover);
-  
+      bookContainer.addEventListener('click', function(event) {
+        event.preventDefault();
+      });
       bookContainer.addEventListener('dblclick', function(event) {
         event.preventDefault();
         const clickedElement = event.target.offsetParent;
-        //console.log(clickedElement);
-        if(clickedElement.classList.contains('.book__image')) {
+       
+        if(clickedElement.classList.contains('book__image')) {
           const id = clickedElement.getAttribute('data-id');
           if(!clickedElement.classList.contains(select.class.favoriteBook)) {
             clickedElement.classList.add(select.class.favoriteBook);
@@ -74,7 +77,7 @@
   
     function filterBooks() {
       for(let book of dataSource.books) {
-        const bookToBeHidden = document.querySelector('.book__image[data-id="id-of-the-book-here"]');
+        const bookToBeHidden = document.querySelector(`.book__image[data-id="${book.id}"]`);
         let shouldBeHidden = false;
         for(let filter of filters) {
           if(!book.details[filter]) {
@@ -90,6 +93,24 @@
       }
     }
   
+    /*function determineRatingBgc(rating){
+    let bgc = '';
+    if(rating <6){
+      bgc = 'linear-gradient(to bottom,  #fefcea 0%, #f1da36 100%);';
+    }
+    if(rating>6 && rating<=8){
+      bgc = 'linear-gradient(to bottom, #b4df5b 0%,#b4df5b 100%);';
+    }
+    if(rating>8 && rating<=9){
+      bgc = 'linear-gradient(to bottom, #299a0b 0%, #299a0b 100%);';
+    }
+    if(rating>9){
+      bgc = 'linear-gradient(to bottom, #ff0084 0%,#ff0084 100%);';
+    }
+    return bgc;
+  }
+  */
+ 
     render();
     initActions();
   
